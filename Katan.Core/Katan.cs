@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using Katan.Core.Extensions;
 
 namespace Katan.Core
@@ -126,9 +127,9 @@ namespace Katan.Core
             _secondRegister.Insert(0, f_a);
         }
 
-        public int KatanEncryption(int plainText)
+        public List<int> KatanEncryption(List<int> plainTextBits)
         {
-            var plainTextBits = Cryptography.NumberToBits(plainText, (int)_version);
+            //var plainTextBits = Cryptography.NumberToBits(plainText, (int)_version);
             _secondRegister = plainTextBits.Take(_secondRegisterCapacity).ToList();
             _firstRegister = plainTextBits.Skip(_secondRegisterCapacity).ToList();
             for (int round = 0; round != 254; round++)
@@ -143,7 +144,12 @@ namespace Katan.Core
                     KatanRoundEncription(round);
                 }
             }
-            return Cryptography.BitsToNumber(_secondRegister.Concat(_firstRegister).ToList());
+            StringBuilder sb = new StringBuilder();
+            foreach(var num in _secondRegister.Concat(_firstRegister))
+            {
+                sb.Append(num);
+            }
+            return _secondRegister.Concat(_firstRegister).ToList();
         }
 
         public void KatanRoundDecription(int round)
@@ -171,9 +177,9 @@ namespace Katan.Core
             _secondRegister.Insert(_secondRegisterCapacity - 1, f_b);
         }
 
-        public int KatanDecription(int cipherText)
+        public List<int> KatanDecription(List<int> cipherTextBits)
         {
-            List<int> cipherTextBits = Cryptography.NumberToBits(cipherText, (int)_version);
+            //List<int> cipherTextBits = Cryptography.NumberToBits(cipherText, (int)_version);
             _secondRegister = cipherTextBits.Take(_secondRegisterCapacity).ToList();
             _firstRegister = cipherTextBits.Skip(_secondRegisterCapacity).ToList();
             for (int round = 253; round != -1; round--)
@@ -188,7 +194,12 @@ namespace Katan.Core
                     KatanRoundEncription(round);
                 }
             }
-            return Cryptography.BitsToNumber(_secondRegister.Concat(_firstRegister).ToList());
+            StringBuilder sb = new StringBuilder();
+            foreach (var num in _secondRegister.Concat(_firstRegister).ToList())
+            {
+                sb.Append(num);
+            }
+            return _secondRegister.Concat(_firstRegister).ToList();
         }
 
         #endregion

@@ -21,18 +21,32 @@ namespace Katan.Core.Extensions
             return binaryFormat;
         }
 
-        public static string BinaryToString(this string data)
+        public static string AlternativeBinaryToString(List<int> binaryList)
         {
-            List<Byte> byteList = new List<Byte>();
-
-            for (int i = 0; i < data.Length; i += 8)
+            Byte[] bytes = new Byte[binaryList.Count];
+            for (int i = 0; i < binaryList.Count; i++)
             {
-                byteList.Add(Convert.ToByte(data.Substring(i, 8), 2));
+                bytes[i] = (byte)binaryList[i];
+            }
+            return Convert.ToBase64String(bytes);
+        }
+
+        public static string BinaryToString(List<int> binaryList)
+        {
+            StringBuilder data = new StringBuilder();
+            List<Byte> byteList = new List<Byte>();
+            foreach (var num in binaryList)
+            {
+                data.Append(num);
+            }
+            for (int i = 0; i < data.ToString().Length; i += 8)
+            {
+                byteList.Add(Convert.ToByte(data.ToString().Substring(i, 8), 2));
             }
             return Encoding.UTF8.GetString(byteList.ToArray());
         }
 
-        public static List<int> NumberToBits(int number,int bitLength)
+        public static List<int> NumberToBits(int number, int bitLength)
         {
             List<int> bits = new List<int>();
             for (int i = 0; i < bitLength; i++)
@@ -78,4 +92,5 @@ namespace Katan.Core.Extensions
             return specialKey;
         }
     }
+
 }

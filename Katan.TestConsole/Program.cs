@@ -14,19 +14,22 @@ namespace Katan.TestConsole
 
         static void Main(string[] args)
         {
-
-
             //string h = "hello my dear friend i'm really glad to see you today";
             ////var bytes = Encoding.ASCII.GetBytes(h);
             ////List<int> bigList = new List<int>();
-
+            StringBuilder sb = new StringBuilder();
             Katan.Core.Katan katan32 = new Katan.Core.Katan(Katan.Core.Katan.Version.Version32, 90);
-            int num = katan32.KatanEncryption(52);
-            int num2 = katan32.KatanDecription(num);
-            Console.WriteLine("Katan32:");
-            Console.WriteLine(num);
-            Console.WriteLine(num2);
-            Console.WriteLine("-----------------------------");
+
+            KatanTextAdapter katanTextAdapter = new KatanTextAdapter(katan32);
+            var secretText = katanTextAdapter.KatanEncryptText("hello my dear freinds");
+            foreach (var block in secretText)
+            {
+               sb.Append(katanTextAdapter.AltKatanDecryptText(Convert.FromBase64String(block)));
+            }
+            Console.WriteLine(sb.ToString());
+            //var bytes = Convert.FromBase64String(secretStr);
+            //Console.WriteLine(katanTextAdapter.KatanDecryptText(secretStr));
+
 
             //Katan.Core.Katan katan64 = new Katan.Core.Katan(Katan.Core.Katan.Version.Version64, 90);
             //num = katan64.KatanEncryption(52);
