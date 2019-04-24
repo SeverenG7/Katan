@@ -26,7 +26,7 @@ namespace Katan.Core
         0, 1, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 1, 0, 1,
         1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0
         };
-
+        private static readonly int _key_bits = 80;
         private static List<int> _key;
         private List<int> _firstRegister;
         private List<int> _secondRegister;
@@ -129,7 +129,6 @@ namespace Katan.Core
 
         public List<int> KatanEncryption(List<int> plainTextBits)
         {
-            //var plainTextBits = Cryptography.NumberToBits(plainText, (int)_version);
             _secondRegister = plainTextBits.Take(_secondRegisterCapacity).ToList();
             _firstRegister = plainTextBits.Skip(_secondRegisterCapacity).ToList();
             for (int round = 0; round != 254; round++)
@@ -143,11 +142,6 @@ namespace Katan.Core
                 {
                     KatanRoundEncription(round);
                 }
-            }
-            StringBuilder sb = new StringBuilder();
-            foreach(var num in _secondRegister.Concat(_firstRegister))
-            {
-                sb.Append(num);
             }
             return _secondRegister.Concat(_firstRegister).ToList();
         }
@@ -179,7 +173,6 @@ namespace Katan.Core
 
         public List<int> KatanDecription(List<int> cipherTextBits)
         {
-            //List<int> cipherTextBits = Cryptography.NumberToBits(cipherText, (int)_version);
             _secondRegister = cipherTextBits.Take(_secondRegisterCapacity).ToList();
             _firstRegister = cipherTextBits.Skip(_secondRegisterCapacity).ToList();
             for (int round = 253; round != -1; round--)
@@ -187,17 +180,12 @@ namespace Katan.Core
                 KatanRoundDecription(round);
                 if ((int)KatanVersion > 32)
                 {
-                    KatanRoundEncription(round);
+                    KatanRoundDecription(round);
                 }
                 if ((int)KatanVersion > 48)
                 {
-                    KatanRoundEncription(round);
+                    KatanRoundDecription(round);
                 }
-            }
-            StringBuilder sb = new StringBuilder();
-            foreach (var num in _secondRegister.Concat(_firstRegister).ToList())
-            {
-                sb.Append(num);
             }
             return _secondRegister.Concat(_firstRegister).ToList();
         }

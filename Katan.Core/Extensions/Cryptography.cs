@@ -57,17 +57,33 @@ namespace Katan.Core.Extensions
             return bits;
         }
 
-        public static int BitsToNumber(List<int> bits)
+        public static int BitsToNumber(List<int> bits, bool flag = true)
         {
-            int number = 0;
-            for (int i = 0; i < bits.Count; i++)
+            if (flag)
             {
-                if (bits[i] == 0 || bits[i] == 1)
+                int number = 0;
+                for (int i = 0; i < bits.Count; i++)
                 {
-                    number += (bits[i] << i);
+                    if (bits[i] == 0 || bits[i] == 1)
+                    {
+                        number += (bits[i] << i);
+                    }
                 }
+                return number;
             }
-            return number;
+            else
+            {
+                long number = 0;
+                for (int i = 0; i < bits.Count; i++)
+                {
+                    if (bits[i] == 0 || bits[i] == 1)
+                    {
+                        number += (bits[i] << i);
+                    }
+                }
+                Console.WriteLine($"From py: {number}");
+                return 0;
+            }
         }
 
         public static IEnumerable<int> SpecialTransform(int key)
