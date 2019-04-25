@@ -23,6 +23,7 @@ namespace Katan
         public MainWindow()
         {
             InitializeComponent();
+            DataContext = new ViewModels.RegisterViewModel();
         }
     }
 }

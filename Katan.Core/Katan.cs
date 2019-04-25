@@ -192,12 +192,13 @@ namespace Katan.Core
 
         #endregion
 
+        #region Infrastructure
         public enum Version
         {
             Version32 = 32,
             Version48 = 48,
             Version64 = 64
         }
-
+        #endregion
     }
 }
